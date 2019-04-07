@@ -6,6 +6,7 @@ from django.db                      import models
 from django.contrib.auth.models     import User
 from datetime 					    import datetime
 from django 						import forms
+from django.utils import timezone
 
 STATUS = (
 	('company', 'Предприниматель'),
@@ -26,7 +27,7 @@ class Company_Post(models.Model):
 	photo   = models.ImageField(upload_to = "images/", default = "images/post_default.png")
 	title   = models.CharField(max_length = 50)
 	message = models.CharField(max_length = 50)
-	date    = models.DateField(max_length = 50)
+	date    = models.DateField(max_length = 50, default = timezone.now())
 
 	def __str__(self):
 		return str(self.date) + ' ' + str(self.company)

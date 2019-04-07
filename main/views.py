@@ -42,6 +42,16 @@ def makeqrcode(id):
     img = qr.make_image(fill_color="black", back_color="white")
     img.save("media/qrcodes/" + str(id) + ".png", "JPEG")
 
+def plus(request):
+    if request.GET.get("index") and request.GET.get("call") and request.GET.get("col"):
+       profile = Profile.objects.get( id = index)
+       profile.cholesterol += int(request.GET["call"])
+       profile.calories += int(request.GET["col"])
+
+       profile.save()
+
+    return HttpResponseRedirect("/")
+
 def login(request):
     context = {}
     
@@ -81,24 +91,45 @@ def index(request):
 
     context["profile"] = profile
     context["company_posts"] = Company_Post.objects.all()
-    
+
     request = render(request, 'main/index.html', context)
 
     return request
 
 def profile(request, views_profile_id):
-    context = {}
-
     if not request.user.is_authenticated():
         return HttpResponseRedirect("/login")
 
-    if request.user.email == "company@m.ru":
-        profile = Company.objects.get(user = request.user)
-    else:
-        profile = Profile.objects.get(user = request.user)
+    context = {}
 
-    context['profile'] = profile
-    request = render(request, 'main/index.html', context)
+    user = User.objects.get(id = views_profile_id)
+
+
+    if user.email == "company@m.ru":
+        view_profile = Company.objects.get(user = user)
+    else:
+        view_profile = Profile.objects.get(user = user)
+
+    context["view_profile"] = view_profile
+
+    if request.user.email == "company@m.ru":
+         context["profile"] = Company.objects.get(user = request.user)
+    else:
+        context["profile"] = Profile.objects.get(user = request.user)
+
+
+    if request.method == "POST":
+        if "com_btn" in request.POST:
+            title = request.POST["title"]
+            message = request.POST["message"]
+
+            post = Company_Post.objects.create(company = Company.objects.get(user = request.user))
+            post.title = title
+            post.message = message
+
+            post.save()
+
+    request = render(request, 'main/profile.html', context)
 
     return request
 
