@@ -85,6 +85,7 @@ section:after
 	margin: 25vh 0 0;
 	padding: 30px;
 	color:#fff;
+	background-color:;
 	z-index: 10;
 }
 .banner-text h2
@@ -102,7 +103,7 @@ section:after
 	padding: 10px 30px;
 	color:#fff;
 	background: #ef6c00;
-	border-radius: 0;
+	border-radius: 5px;
 	text-transform: uppercase;
 }
 .carousel-indicators
@@ -190,7 +191,7 @@ section:after
 	}
 }
 .textpage{
-	color:#b0bec5;
+	color:#f5f5f5;
 }
 
 
