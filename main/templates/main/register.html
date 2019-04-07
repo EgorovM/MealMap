@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+{% include 'main/header.html' %}
+
+<html>
+	<form action="." method="post">
+		<input type = "text" name = "login" placeholder="Имя пользователя">
+		<input type = "password" name = "password" placeholder="password">
+		<input type = "text" name = "first_name" placeholder="first_name">
+		<input type = "text" name = "last_name" placeholder="last_name">
+		<input type = "text" name = "city" placeholder="city">  
+		<input type = "submit" name="ok_button">
+	</form>
+
+{% include 'main/footer.html' %}

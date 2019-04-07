@@ -1,0 +1,114 @@
+{% load staticfiles %}
+{% include 'main/header.html' %}
+
+	    		<div class = "container">
+					<div class = "row">
+						<div style="padding-right: 20px;padding-left: 20px;">
+							<h5 class = "h3" style="margin-left:12px"> Настройки </h5>
+							<br>
+							<div class = "row">
+								<div class = "col s10">
+									<div class="row">
+										<div class="col s12">
+											<ul class="tabs">
+												<li class="tab"><a href="/settings" onclick="location='/settings';"  class = "grey-text lighten-5" style="font-size: 12px;">Аккаунт</a></li>
+												<li class="tab"><a href="/picture" onclick="location='/picture';" class = "grey-text lighten-5" style="font-size: 12px">Фото профиля</a></li>
+												<li class="tab" style="display: none"><a class = "active"></a></li>
+											</ul>
+										</div>
+									</div>
+
+									<div class = "row">
+										<div class = "col s9 offset-s1">
+											<form action = "." method = "post">
+
+												{% if request.user.email == "profile@m.ru" %}
+													{% csrf_token %}
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Фамилия</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "first_name" type="text" class="validate" value="{{profile.user.last_name}}">
+														</div>
+													</div>
+
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Имя</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "first_name" type="text" class="validate" value="{{profile.user.first_name}}">
+														</div>
+													</div>
+												{% else %}
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Предприятие</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "name" type="text" class="validate" value="{{profile.name}}">
+														</div>
+													</div>
+												{% endif %}
+
+												<div class="row form-group">
+													<div class = "col s3">
+														<p class = "right">Город</p>
+													</div>
+
+													<div class="input-field col s9">
+														<input id="text" name = "city" type="text" class="validate" value="{{profile.city}}">
+														<span class="helper-text">Например: Якутск, Нюрба, Ытык-куол</span>
+													</div>
+												</div>
+
+												{% if request.user.email == "profile@m.ru" %}
+
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Обо мне</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "about" type="text" class="validate" value="{{profile.about}}">
+															<span class="helper-text">Расскажи о себе в 3 словах</span>
+														</div>
+													</div>
+
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Мои пожелания</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "about" type="text" class="validate" value="{{profile.wishes}}">
+															<span class="helper-text">Что вы не можете переварить</span>
+														</div>
+													</div>
+												{% else %}
+													<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Адрес</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "adress" type="text" class="validate" value="{{profile.address}}">
+														</div>
+													</div>
+												{% endif %}
+												<div class="input-field col s9 offset-s3">
+													<input class="btn green" type = "submit" name = "ok_button" value = "Сохранить изменения">
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+{% include 'main/footer.html' %}

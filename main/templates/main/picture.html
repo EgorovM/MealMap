@@ -1,0 +1,71 @@
+{% load staticfiles %}
+{% include 'main/header.html' %}
+
+    		<div class = "container">
+	    		<div class = "row screen_mode">
+					<div style="padding-right: 20px;padding-left: 20px;">
+						<h5 class = "h3" style="margin-left:12px"> Настройки </h5>
+						<br>
+						<div class = "row">
+							<div class = "col s10">
+
+								<div class="row">
+									<div class="col s12">
+										<ul class="tabs">
+											<li class="tab"><a href="/settings.php" onclick="location='/settings';"  class = "grey-text lighten-5" style="font-size: 12px;">Аккаунт</a></li>
+											<li class="tab"><a href="/picture.php" onclick="location='/picture';" class = "grey-text lighten-5" style="font-size: 12px">Фото профиля</a></li>
+											<li class="tab" style="display: none"><a class = "active"></a></li>
+										</ul>
+									</div>
+								</div>
+
+								<div class = "row">
+									<div class = "col s9 offset-s1">
+										<form action="." method="post" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="row form-group">
+												<div class = "col s3 ">
+													<p class = "right">Текущий аватар</p>
+												</div>
+
+												<div class="input-field col s9">
+													<div class = "col s12" style="position: relative; height: 90px">
+														<div  style="background-image: url(/media/{{profile.avatar}}); background-size: cover;background-position: center; position: absolute; height: 140px; width: 140px; z-index: 100; border-radius: 100%; border: 3px solid white;"></div>
+													</div>
+												</div>
+											</div>
+
+											<div class="row form-group">
+												<div class = "col s3">
+													<p class = "right">Новый аватар </p>
+												</div>
+
+												<div class="input-field col s9">
+
+													<div class="file-field input-field">
+														<div class="btn green">
+															<span><strong>File</strong></span>
+															<input type="file" name="image" accept="image/*">
+														</div>
+															<div class="file-path-wrapper">
+															<input class="file-path validate" type="text" value="{{profile.photo}}">
+														</div>
+													</div>
+												</div>
+											</div>
+
+
+											<div class="input-field col s9 offset-s3">
+												<input class="green btn" type="submit" name = "ok_button" value = "Сохранить изменения">
+											</div>
+
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+{% include 'main/footer.html' %}   
