@@ -2,7 +2,9 @@
 
 {% include 'main/header.html' %}
 	
-
+	{% if profile.status == "profile" %}
+    	<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Мой qrcode</a>
+    {% endif %}
 
     {% for post in company_posts %}
 	  <div class="row">

@@ -44,7 +44,7 @@ def makeqrcode(id):
 
 def plus(request):
     if request.GET.get("index") and request.GET.get("call") and request.GET.get("col"):
-       profile = Profile.objects.get( id = index)
+       profile = Profile.objects.get( id = request.GET["index"])
        profile.cholesterol += int(request.GET["call"])
        profile.calories += int(request.GET["col"])
 

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^profile/(?P<views_profile_id>[0-9]+)/$', views.profile,     name = 'profile'),
     url(r'^logout_view/$',                           views.logout_view,     name = 'logout'),
     url(r'^login/$',                           views.login,     name = 'login'),
+    url(r'^plus/$',                           views.plus,     name = 'plus'),
     # url(r'^(?P<order_id>[0-9]+)/$', views.order, name='order'),
     # url(r'^login/$', views.login, name = 'login'),
     # url(r'^logout/$', views.logout, name = 'logout'),
