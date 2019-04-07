@@ -23,6 +23,7 @@ class Review(models.Model):
 
 class Company_Post(models.Model):
 	company = models.ForeignKey('Company')
+	photo   = models.ImageField(upload_to = "images/", default = "images/post_default.png")
 	title   = models.CharField(max_length = 50)
 	message = models.CharField(max_length = 50)
 	date    = models.DateField(max_length = 50)
@@ -56,7 +57,7 @@ class Profile(models.Model):
 		return str(self.user.first_name) + ' ' + str(self.user.last_name)
 
 class Company(models.Model):
-	status = models.CharField(max_length = 10, default = "company")
+	status  = models.CharField(max_length = 10, default = "company")
 	user    = models.OneToOneField(User)
 	name    = models.CharField(max_length = 50)
 	city    = models.CharField(max_length = 50)
