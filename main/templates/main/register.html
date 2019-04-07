@@ -4,6 +4,15 @@
 
 <html>
 	<form action="." method="post">
+		{% csrf_token %}
+		<div class="input-field col s12">
+			<select name = "status">
+				<option value="" disabled selected>Выбери</option>
+				<option value="company">Предприниматель</option>
+				<option value="profile">Потребитель</option>
+			</select>
+			<label>Я...</label>
+		</div>
 		<input type = "text" name = "login" placeholder="Имя пользователя">
 		<input type = "password" name = "password" placeholder="password">
 		<input type = "text" name = "first_name" placeholder="first_name">
@@ -12,4 +21,12 @@
 		<input type = "submit" name="ok_button">
 	</form>
 
+<script type="text/javascript">
+	
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
+        
+</script>
 {% include 'main/footer.html' %}
+

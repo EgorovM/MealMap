@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts 			import render, HttpResponseRedirect, redirect, HttpResponse
-from .models					import Profile, Company
+from .models					import Profile, Company, Company_Post
 from django.db 					import IntegrityError
 from django.core.paginator 		import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
@@ -28,6 +28,19 @@ value = {"school_enter":"present","school_exit":"leave"}
 secret_word = "axaxloleslivslomaesh"
 
 ykt_utc = timezone('Asia/Yakutsk')
+
+def makeqrcode(id):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(id)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save("media/qrcodes/" + str(id) + ".png", "JPEG")
 
 def login(request):
     context = {}
@@ -67,7 +80,8 @@ def index(request):
         profile = Profile.objects.get(user = request.user)
 
     context["profile"] = profile
-
+    context["company_posts"] = Company_Post.objects.all()
+    
     request = render(request, 'main/index.html', context)
 
     return request
@@ -102,18 +116,24 @@ def register(request):
                     user.save()
 
                 except IntegrityError:
-                    context["break"] = True
+                    context["error_message"] = "Такой аккаунт уже существует"
                     response = render(request, 'main/register.html', context)
                     return response
 
-                if request.POST["status"] == "company":
+                if 'status' in request.POST and request.POST['status'] == "company":
                     user.email = "company@m.ru"
                     profile = Company(user = user)
+                    profile.save()
+                    user.save()
                 else:
                     user.email = "profile@m.ru"
                     profile = Profile(user = user)
-
-                profile.save()      
+                    profile.save()
+                   
+                    makeqrcode(profile.id)
+                    profile.qrcode = "qrcodes/" + str(profile.id) + ".png"
+                    profile.user.save()
+                    profile.save()
 
                 user = authenticate(username = username, password = password)
 
@@ -143,13 +163,27 @@ def settings(request):
 
     if request.method == "POST":
         if "ok_button" in request.POST:            
-            new_password   = request.POST["password"]
-            new_city       = request.POST["city"]
-            new_first_name = request.POST["first_name"]
-            new_last_name  = request.POST["last_name"]
+            if request.POST["password"] != "" and request.POST["password"] != None:
+                new_password   = request.POST["password"]
+                profile.user.password = new_password
 
-            profile.user.first_name = new_first_name
-            profile.user.last_name  = new_last_name
+            new_city       = request.POST["city"]
+            if request.user.email == "company@m.ru":
+                new_name = request.POST["name"]
+                new_address = request.POST["address"]
+                profile.name = new_name
+                profile.address = new_address
+            else:
+                new_first_name = request.POST["first_name"]
+                new_last_name  = request.POST["last_name"]
+                new_about      = request.POST["about"]
+                new_wishes     = request.POST["wishes"]
+
+                profile.user.first_name = new_first_name
+                profile.user.last_name  = new_last_name
+                profile.wishes = new_wishes
+                profile.about = new_about
+            
             profile.city            = new_city
 
             profile.save()

@@ -21,16 +21,16 @@
 									<div class = "row">
 										<div class = "col s9 offset-s1">
 											<form action = "." method = "post">
-
+												{% csrf_token %}
 												{% if request.user.email == "profile@m.ru" %}
-													{% csrf_token %}
+													
 													<div class="row form-group">
 														<div class = "col s3">
 															<p class = "right">Фамилия</p>
 														</div>
 
 														<div class="input-field col s9">
-															<input id="text" name = "first_name" type="text" class="validate" value="{{profile.user.last_name}}">
+															<input id="text" name = "last_name" type="text" class="validate" value="{{profile.user.last_name}}">
 														</div>
 													</div>
 
@@ -85,7 +85,7 @@
 														</div>
 
 														<div class="input-field col s9">
-															<input id="text" name = "about" type="text" class="validate" value="{{profile.wishes}}">
+															<input id="text" name = "wishes" type="text" class="validate" value="{{profile.wishes}}">
 															<span class="helper-text">Что вы не можете переварить</span>
 														</div>
 													</div>
@@ -96,10 +96,19 @@
 														</div>
 
 														<div class="input-field col s9">
-															<input id="text" name = "adress" type="text" class="validate" value="{{profile.address}}">
+															<input id="text" name = "address" type="text" class="validate" value="{{profile.address}}">
 														</div>
 													</div>
 												{% endif %}
+												<div class="row form-group">
+														<div class = "col s3">
+															<p class = "right">Пароль</p>
+														</div>
+
+														<div class="input-field col s9">
+															<input id="text" name = "password" type="password" class="validate" value="{{profile.password}}">
+														</div>
+													</div>
 												<div class="input-field col s9 offset-s3">
 													<input class="btn green" type = "submit" name = "ok_button" value = "Сохранить изменения">
 												</div>
