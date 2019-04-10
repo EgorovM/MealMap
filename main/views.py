@@ -187,7 +187,7 @@ def register(request):
             else:
                 context['error_message'] = 'Заполните все поля, пожалуйста'
 
-    
+
     request = render(request, 'main/register.html', context)
 
     return request
