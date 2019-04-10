@@ -48,10 +48,12 @@
                         <a href="#name"><span class="white-text name">{{profile.user.first_name}} {{profile.user.last_name}}</span></a>
                         {%if profile.status == "company"%}
                             <a href="#name"><span class="white-text name"> Аккаунт предпринимателя </span></a>
+                        {% else %}
+                            <a href="#name"><span class="white-text name"> Аккаунт потребителя </span></a>
                         {% endif %}
                     </div></li>
                     
-                    <li><a class = "waves-effect" href="/profile/{{profile.id}}"><i class="material-icons teal-text">group</i>Мой профиль</a></li>
+                    <li><a class = "waves-effect" href="/profile/{{profile.user.id}}"><i class="material-icons teal-text">group</i>Мой профиль</a></li>
                       
                     <li><a class = "waves-effect" href="/settings"><i class="material-icons teal-text">settings</i>Редактировать</a></li>
                     <li><a class = "waves-effect" href="/logout_view"><i class="material-icons teal-text">exit_to_app</i>Выйти</a></li>

@@ -1,11 +1,239 @@
 {% load staticfiles %}
 
 {% include 'main/header.html' %}
-	
 
-	{% if profile.status == "profile" %}
-    	<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Мой qrcode</a>
+<div class = "row">
+						<div class = "white col s3" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px">
+							<div class = "row profile_content">
+								<img class = "profile_photo center" src = "/media/{{view_profile.avatar}}" style="object-fit: cover; background-position: center; margin: 10px; border-radius: 2%;">
+								<div style= "margin-left:10px; margin-right: 10px">
+									{% if view_profile.status == "profile" %}
+										<h5>{{view_profile.user.first_name}}  {{view_profile.user.last_name}}</h5>
+										<p class="grey-text">{{view_profile.about}}</p>
+										<p> Потребитель </p>
+									{% else %}
+										<h5>{{view_profile.name}}</h5>
+										<p class="grey-text">{{view_profile.about}}</p>
+										<p> Предприниматель </p>
+									{% endif %}
+
+									<hr>
+									<font class="left grey-text" style="font-size: 14px"> Город: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.city}} </font>
+									<br>
+									<font class="left grey-text" style="font-size: 14px"> Потреблено холестерина: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.cholesterol}} </font>
+									<br>
+									<font class="left grey-text" style="font-size: 14px"> Потреблено каллориев: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.calories}} </font>
+									<br>
+								</div>
+							</div>
+						</div>
+
+						<div class = "col s7 right">
+							{% if view_profile == profile %}
+								<div class = "col s12 white" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px">
+									<form action = "." method = "post">
+				    					{% csrf_token %}
+				    					{% if profile.status == "company" %}
+											<div class="row">
+												
+												<div class="col s12">
+										          Заголовок:
+										          <div class="input-field inline">
+										            <input id="email_inline" type="email" class="validate">
+										            <label for="email_inline">Заголовок</label>
+										          </div>
+										        </div>
+
+												<div class="input-field col s12">
+													<textarea class="materialize-textarea" type = "text" name = "new_post_text" class="materialize-textarea"></textarea>
+
+													<label for="textarea1">Что у вас нового?</label>
+												</div>
+
+												<input class="btn green right" type = "submit" name = "com_btn" value = "Отправить" style="margin-right: 10px; ">
+											</div>
+										{% endif %}
+									</form>
+								</div>
+							{% endif %}
+
+							{% for post in posts%}
+								<div class = "col s12 white" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px; margin-bottom: 10px">
+									<div class = "row" style="margin-right: 10px;margin-left: 10px;">
+										<div class = "row" style=" margin-bottom: 0">
+											<div class = "row">
+												<div style="position: relative; width: 48px; float:left">
+													<img class = "right" src = "/media/{{post.author.photo}}" style="width: 48px;height: 48px; border-radius: 100%; position: absolute; left:20px; top:13px; object-fit: cover;">
+												</div>
+												<div class = "col s7 left" style=" margin-left: 66px ">
+													<p>{{post.author.name}} <br><font class = "grey-text left">{{post.data}}</font></p>
+												</div>
+												<div class = "col s3 right">
+													{% if post.author == profile%}
+														<form action = "." method="post">
+															{% csrf_token %}
+															<br>
+															 <input type="text" name="post_id" value="{{post.id}}" style="display: none">
+															<input class="btn red right" type = "submit" name = "delete" value = "Удалить" style="margin-right: 10px;min-width: 120px ">
+														</form>
+													{% endif%}
+												</div>
+											</div>
+										</div>
+
+										<textarea class="materialize-textarea" readonly>{{post.text}}
+
+										</textarea>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+		    </main>
+		</div>
+
+		<div class = "handheld_mode">
+	    	<header>
+	    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="position: absolute; z-index: 100; top:19px; left: 25px" hidden><i class="material-icons white-text">menu</i></a>
+				<ul id="slide-out" class="sidenav">
+					<li>
+						<div class="user-view">
+						<div class="background">
+						<img src="/media/images/background.jpg">
+						</div>
+						<a href="#user"><img class="circle" src="/media/{{profile.photo}}" style="object-fit: cover; height: 120px;width: 120px"></a>
+						<a href="#name"><span class="white-text">{{profile.name}}</span></a><br>
+						<a href="#email"><span class="white-text">{{profile.user.email}}</span></a>
+						</div>
+					</li>
+
+					<li><a href="/profile/{{profile.id}}"> <i class = "material-icons left">home</i> Моя страница</a> </li>
+					<li><a href="/feed"> <i class = "material-icons left">dehaze</i> Лента </a></li>
+					<li><a href="/news"> <i class = "material-icons left">info</i> Новости </a></li>
+					<li><a href="/work"> <i class = "material-icons left">work</i> Вакансии </a></li>
+					<li><a href="/group"> <i class = "material-icons left">group</i>Группы </a></li>
+					<li><div class="divider"></div></li>
+					<li><a class="waves-effect" href="/logout"><i class = "material-icons left">exit_to_app</i>Выйти</a></li>
+				</ul>
+	    	</header>
+
+
+	    	<main>
+	    		
+	    		<div class = "container" style="margin-top: 10px">
+					<div class = "row ">
+						<div class = "white col s12" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px">
+							<div class = "row profile_content">
+								<img class = "profile_photo center left" src = "/media/{{view_profile.photo}}" style="object-fit: cover; background-position: center; margin: 10px; border-radius: 2%;">
+								<div class="col s9">
+									<h5>{{view_profile.name}}</h5>
+									<p class="grey-text">{{view_profile.user.first_name}}</p>
+
+									<hr>
+									<font class="left grey-text" style="font-size: 14px"> Класс: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.grade}} </font>
+									<br>
+									<font class="left grey-text" style="font-size: 14px"> Количество лиров: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.liras}} </font>
+									<br>
+									<font class="left grey-text" style="font-size: 14px"> Количество мифов: </font>
+									<font class="right" style="font-size: 14px"> {{view_profile.mais}} </font>
+									<br>
+								</div>
+							</div>
+						</div>
+
+						<div class = "col s12">
+							<div class = "row">
+								{% if view_profile == profile%}
+									<div class = "col s12 white" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px">
+										<form action = "." method = "post">
+					    					{% csrf_token %}
+											<div class="row">
+												<div class="input-field col s12">
+												<textarea class="materialize-textarea" type = "text" name = "new_post_text" class="materialize-textarea"></textarea>
+												<label for="textarea1">Что у вас нового?</label>
+												</div>
+
+												<input class="btn green right" type = "submit" name = "ok_button" value = "Отправить" style="margin-right: 10px; ">
+											</div>
+										</form>
+									</div>
+								{% endif %}
+
+								{% for post in posts%}
+									<div class = "col s12 white" style="border-radius: 1%; border:1px solid #ddd; margin-top: 10px; margin-bottom: 10px">
+										<div class = "row" style="margin-right: 10px;margin-left: 10px;">
+											<div class = "row" style=" margin-bottom: 0">
+												<div class = "row">
+													<div style="position: relative; width: 48px; float:left">
+														<img class = "right" src = "/media/{{post.author.photo}}" style="width: 48px;height: 48px; border-radius: 100%; position: absolute; left:20px; top:13px; object-fit: cover;">
+													</div>
+													<div class = "col s7 left" style=" margin-left: 66px ">
+														<p>{{post.author.name}} <br><font class = "grey-text left">{{post.data}}</font></p>
+													</div>
+													<div class = "col s3 right">
+														{% if post.author == profile%}
+															<form action = "." method="post">
+																{% csrf_token %}
+																<br>
+																 <input type="text" name="post_id" value="{{post.id}}" style="display: none">
+																<input class="btn red right" type = "submit" name = "delete" value = "Удалить" style="margin-right: 10px;min-width: 120px ">
+															</form>
+														{% endif%}
+													</div>
+												</div>
+											</div>
+
+											<textarea class="materialize-textarea" readonly>{{post.text}}
+
+											</textarea>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+		    </main>
+		</div>
+
+		<script type="text/javascript">
+			$(".profile_photo").attr("width",$(".profile_content").width()-20)
+			$(".profile_photo").attr("height",$(".profile_content").width()-20)
+			$('.dropdown-button2').dropdown({
+			      inDuration: 300,
+			      outDuration: 225,
+			      constrain_width: false, // Does not change width of dropdown to that of the activator
+			      hover: true, // Activate on hover
+			      gutter: ($('.dropdown-content').width()*3)/2.5 + 5, // Spacing from edge
+			      belowOrigin: false, // Displays dropdown below the button
+			      alignment: 'left' // Displays dropdown with edge aligned to the left of button
+			    }
+  			);
+  			width=screen.width; // ширина  
+	    
+  			if(width < 768){
+		    	$(".screen_mode").css("display","none")
+		    	$(".handheld_mode").css("display","block")
+			}
+			else{
+				$(".screen_mode").css("display","block")
+		    	$(".handheld_mode").css("display","none")
+			}
+
+			$(document).ready(function(){
+			    $('.sidenav').sidenav();
+			  });
+		</script>
+    </body>
+    {% if error_message != None %}
+    	<script type="text/javascript">
+    		M.toast({html: '{{ error_message }}'})
+    	</script>
     {% endif %}
-
-
 {% include 'main/footer.html' %}
