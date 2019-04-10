@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+import os
+from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts 			import render, HttpResponseRedirect, redirect, HttpResponse
 from .models					import Profile, Company, Company_Post
 from django.db 					import IntegrityError
@@ -42,6 +44,17 @@ def makeqrcode(id):
     img = qr.make_image(fill_color="black", back_color="white")
     img.save("media/qrcodes/" + str(id) + ".png", "JPEG")
 
+def about(request):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+    
+    response = render(request, 'main/about.html')
+    return response
 def plus(request):
     if request.GET.get("index") and request.GET.get("call") and request.GET.get("col"):
        profile = Profile.objects.get( id = request.GET["index"])
@@ -174,6 +187,7 @@ def register(request):
             else:
                 context['error_message'] = 'Заполните все поля, пожалуйста'
 
+    
     request = render(request, 'main/register.html', context)
 
     return request
